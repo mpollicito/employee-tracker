@@ -1,0 +1,22 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "Command line app to keep tabs on your employees!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mpollicito/employee-tracker.git"
+  },
+  "author": "Matthew Pollicito",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mpollicito/employee-tracker/issues"
+  },
+  "homepage": "https://github.com/mpollicito/employee-tracker#readme",
+  "dependencies": {
+    "inquirer": "^7.3.3"
+  }
+}
