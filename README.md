@@ -1,2 +1,2 @@
 # employee-tracker
-Track Employess via the Terminal/Console !
+Track Employees via the Terminal/Console !
