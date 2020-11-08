@@ -3,17 +3,29 @@ CREATE database emp_trackerDB;
 
 USE emp_trackerDB;
 
-CREATE TABLE epmloyeelist (
-  position INT NOT NULL,
-  names VARCHAR(100) NULL,
-  song VARCHAR(100) NULL,
-  year INT NULL,
-  raw_total DECIMAL(10,4) NULL,
-  raw_usa DECIMAL(10,4) NULL,
-  raw_uk DECIMAL(10,4) NULL,
-  raw_eur DECIMAL(10,4) NULL,
-  raw_row DECIMAL(10,4) NULL,
-  PRIMARY KEY (position)
+CREATE TABLE employee(
+  id INT NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(30) NOT NULL,
+  last_name VARCHAR(30) NOT NULL,
+  role_id INTEGER NOT NULL,
+  manager_id INTEGER NOT NULL,
+  PRIMARY KEY (id)
 );
 
-SELECT * FROM epmloyeelist;
+CREATE TABLE department(
+  id INT NOT NULL AUTO_INCREMENT,
+  department_name VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE role(
+  id INT NOT NULL AUTO_INCREMENT,
+  title VARCHAR(30) NOT NULL,
+  salary DECIMAL NOT NULL,
+  department_id INT NOT NULL,
+  PRIMARY KEY (id)
+);
+
+SELECT * FROM employee;
+SELECT * FROM department;
+SELECT * FROM role;
