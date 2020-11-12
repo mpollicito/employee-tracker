@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
-const app = inquirer();
 const path = require("path");
 const fs = require("fs");
+const mysql = require("mysql");
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
     user: "root",
   
     // Your password
-    password: "",
+    password: "password",
     database: "emp_trackerDB"
 });
 
@@ -22,36 +22,79 @@ function askQuestion() {
         {
             type: "list",
             name: "userChoice",
-            message: "What type of employee do you want to add?",
+            message: "What would you like to do?",
             choices: [
-                "Engineer",
-                "Intern",
-                "Manager",
+                "View Department",
+                "View Employees",
+                "View Roles",
+                "Add Department",
+                "Add Employee",
+                "Add Roles",
                 "Done"
             ]
         }
     ]).then(function(answer){
         switch(answer.userChoice) {
-            case "Engineer":
-                addEngineer()
+            case "View Department":
+                viewDepartment()
                 break;
-            case "Intern":
-                addIntern()
+            case "View Employees":
+                viewEmployees()
                 break;
-            case "Manager":
-                addManager()
-                break;  
+            case "View Roles":
+                viewRoles()
+                break;
+            case "Add Department":
+                addDepartment()
+                break;   
+            case "Add Employee":
+                addEmployee()
+                break;
+            case "Add Roles":
+                addRoles()
+                break;           
             default:
                 buildTeam()       
         }
     })
 }
 
-app.use(inquirer.json());
-app.use(inquirer.urlencoded({ extended: true }));
-app.use(inquirer.static("public"));
-app.use(connection);
-askQuestion();
+function viewDepartment() {
+    connection.query("select * from department", function(err, res) {
+        if (err) throw err
+        console.table(res);
+    })
+}
 
-// Start the server on the port
-app.listen(PORT, () => console.log('Listening on localhost:' + PORT));
+function viewEmployees() {
+    connection.query("select * from employee", function(err, res) {
+        if (err) throw err
+        console.table(res);
+    })
+}
+
+function viewRoles() {
+    connection.query("select * from role", function(err, res) {
+        if (err) throw err
+        console.table(res);
+    })
+}
+
+function addDepartment() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "name",
+            message: "What is your new department name?"
+
+        }
+    ]).then(function(response) {
+        connection.query("insert into department set ?", {department_name: response.name}, function(err, res) {
+            if (err) throw err
+            console.log("department_name");
+        })
+    })
+
+}
+
+askQuestion();
