@@ -22,7 +22,7 @@ function askQuestion() {
         {
             type: "list",
             name: "userChoice",
-            message: "What would you like to do?",
+            message: "Welcome to Inquirer Employee Tracker. What would you like to do?",
             choices: [
                 "View Department",
                 "View Employees",
@@ -30,6 +30,10 @@ function askQuestion() {
                 "Add Department",
                 "Add Employee",
                 "Add Roles",
+                "Update Employee Roles",
+                "Delete Roles",
+                "Delete Department",
+                "Delete Employee",
                 "Done"
             ]
         }
@@ -53,6 +57,18 @@ function askQuestion() {
             case "Add Roles":
                 addRoles()
                 break;
+            case "Update Employee Roles":
+                updateEmployeeRoles()
+                break;
+            case "Delete Roles":
+                deleteRole()
+                break;
+            case "Delete Department":
+                deleteDepartment()
+                break;
+            case "Delete Employee":
+                deleteEmployee()
+                break;    
             default:
                 console.log("Finished")
         }
@@ -144,4 +160,72 @@ function addRoles() {
     })
 }
 
+function updateEmployeeRoles() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "employeeId",
+            message: "What is the employee's ID?"
+        },
+        {
+            type: "input",
+            name: "newRole",
+            message: "What is the employee's new/additional role ID?"
+        }
+    ]).then(function (response) {
+        connection.query("UPDATE employee SET ? WHERE ?", [{ role_id: response.newRole }, { id: response.employeeId }], function (err, res) {
+            if (err) throw err
+            console.log(res.affectedRows + " employee role updated");
+            askQuestion();
+        })
+    })
+}
+
+function deleteRole() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "roleId",
+            message: "What is the role you'd like to delete?"
+        },
+    ]).then(function (response) {
+        connection.query("DELETE from role WHERE ?", { id: response.roleId }, function (err, res) {
+            if (err) throw err
+            console.log(res.affectedRows + " role(s) deleted");
+            askQuestion();
+        })
+    })
+}
+
+function deleteDepartment() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "departmentId",
+            message: "Which department would you like to delete?"
+        },
+    ]).then(function (response) {
+        connection.query("DELETE from department WHERE ?", { id: response.departmentId }, function (err, res) {
+            if (err) throw err
+            console.log(res.affectedRows + " department(s) deleted");
+            askQuestion();
+        })
+    })
+}
+
+function deleteEmployee() {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "employeeId",
+            message: "What is the employee ID you'd would you like to delete?"
+        },
+    ]).then(function (response) {
+        connection.query("DELETE from employee WHERE ?", { id: response.employeeId }, function (err, res) {
+            if (err) throw err
+            console.log(res.affectedRows + " employee(s) deleted");
+            askQuestion();
+        })
+    })
+}
 askQuestion();
